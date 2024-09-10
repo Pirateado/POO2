@@ -61,10 +61,25 @@ public abstract class Cuadrilatero extends FiguraGeometrica {
     public void setVertice4(Punto vertice4) {
         this.vertice4 = vertice4;
     }
-    private boolean checkRectangulo() {
-       return false;
-    }
-   private double escalarProducto(){
-       return false;
+ private boolean checkRectangulo(Punto v1, Punto v2, Punto v3, Punto v4) {
+        Punto auxVert = v1.calcularPuntoMasCercano(new Punto[]{v2, v3, v4});
+        if (auxVert.equals(v2)) {
+            return v1.getDistancia(v3) == v2.getDistancia(v4)
+                && v1.getDistancia(v4) == v2.getDistancia(v3)
+                && escalarProducto(v1, auxVert, v1.calcularPuntoMasCercano(new Punto[]{v3, v4}));
+        } else if (auxVert.equals(v3)) {
+            return v1.getDistancia(v2) == v3.getDistancia(v4)
+                && v1.getDistancia(v4) == v3.getDistancia(v2)
+                && escalarProducto(v1, auxVert, v1.calcularPuntoMasCercano(new Punto[]{v2, v4}));
+        } else if (auxVert.equals(v4)) {
+            return v1.getDistancia(v2) == v4.getDistancia(v3)
+                && v1.getDistancia(v3) == v4.getDistancia(v2)
+                && escalarProducto(v1, auxVert, v1.calcularPuntoMasCercano(new Punto[]{v2, v3}));
+        } else {
+            return false;
+        }
+ private boolean escalarProducto(Punto p1, Punto p2, Punto p3) {
+        return (p3.getCoordenaY() - p1.getCoordenaY()) * (p2.getCoordenaY() - p1.getCoordenaY())
+            + (p3.getCoordenaX() - p1.getCoordenaX()) * (p2.getCoordenaX() - p1.getCoordenaX()) == 0;
     }
 }
